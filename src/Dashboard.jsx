@@ -1,13 +1,22 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Dashboard = () => {
     const [tokenInfo, setTokenInfo] = useState(null);
     const [userData, setUserData] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const authorizationCode = urlParams.get('code');
+        const errorParam = urlParams.get('error');
+        const errorDescription = urlParams.get('error_description');
+
+        if (errorParam) {
+            navigate(`/?error=${errorParam}&error_description=${errorDescription}`);
+            return;
+        }
 
         const fetchToken = async () => {
             try {
@@ -22,13 +31,14 @@ const Dashboard = () => {
                 setTokenInfo(response.data);
             } catch (error) {
                 console.error('Error fetching token:', error);
+                navigate(`/?error=token_fetch_failed&error_description=Failed to fetch token`);
             }
         };
 
         if (authorizationCode) {
             fetchToken();
         }
-    }, []);
+    }, [navigate]);
 
     const fetchUserData = async () => {
         try {
@@ -40,6 +50,7 @@ const Dashboard = () => {
             setUserData(response.data);
         } catch (error) {
             console.error('Error fetching user data:', error);
+            navigate(`/?error=user_data_fetch_failed&error_description=Failed to fetch user data`);
         }
     };
 

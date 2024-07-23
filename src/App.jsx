@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const App = () => {
@@ -28,6 +28,16 @@ const App = () => {
             window.location.href = `${authorizationEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
         }
     };
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const errorParam = urlParams.get('error');
+        const errorDescription = urlParams.get('error_description');
+
+        if (errorParam) {
+            setError(`Error: ${errorParam}. ${decodeURIComponent(errorDescription || '')}`);
+        }
+    }, []);
 
     return (
         <div>
