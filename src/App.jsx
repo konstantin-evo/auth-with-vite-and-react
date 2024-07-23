@@ -21,8 +21,8 @@ const App = () => {
         const clientId = import.meta.env.VITE_CLIENT_ID;
         const redirectUri = import.meta.env.VITE_REDIRECT_URI;
         const authorizationEndpoint = import.meta.env.VITE_AUTH_URL;
+        const scope = import.meta.env.VITE_CLIENT_SCOPE;
         const responseType = 'code';
-        const scope = 'openid profile email';
 
         if (authorizationEndpoint) {
             window.location.href = `${authorizationEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
