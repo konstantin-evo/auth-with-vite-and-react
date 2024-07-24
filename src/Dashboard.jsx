@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
@@ -60,31 +60,65 @@ const Dashboard = () => {
         }
     };
 
+    // TODO: Implement logout with Ory Hydra - Ory Kratos Solution
+    const handleLogout = () => {
+        try {
+            document.cookie.split(";").forEach(cookie => {
+                const cookieName = cookie.split("=")[0].trim();
+                document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
+            });
+
+            window.location.href = '/';
+
+            setTokenInfo(null);
+            setUserData(null);
+            setError(null);
+        } catch (error) {
+            console.error('Error during logout:', error);
+            setError('Failed to logout');
+        }
+    };
+
     return (
-        <div className="container mt-5">
-            <h1>Dashboard</h1>
-            {tokenInfo ? (
-                <div>
-                    <h2>Token Info</h2>
-                    <pre>{JSON.stringify(tokenInfo, null, 2)}</pre>
-                    <button className="btn btn-primary mt-3" onClick={fetchUserData}>
-                        Fetch User Data
-                    </button>
-                    {error && (
-                        <div className="alert alert-danger mt-3">
-                            {error}
-                        </div>
-                    )}
-                    {userData && (
-                        <div className="mt-3">
-                            <h2>User Data</h2>
-                            <pre>{JSON.stringify(userData, null, 2)}</pre>
-                        </div>
-                    )}
+        <div>
+            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                <div className="collapse navbar-collapse">
+                    <ul className="navbar-nav ms-auto">
+                        <li className="nav-item">
+                            <button className="btn btn-secondary me-2" onClick={handleLogout}>
+                                Logout
+                            </button>
+                        </li>
+                        <li className="nav-item">
+                            <button className="btn btn-secondary me-2" onClick={fetchUserData}>
+                                Get User Data
+                            </button>
+                        </li>
+                    </ul>
                 </div>
-            ) : (
-                <p>Loading token info...</p>
-            )}
+            </nav>
+            <div className="container mt-5">
+                <h1>Dashboard</h1>
+                {tokenInfo ? (
+                    <div>
+                        <h2>Token Info</h2>
+                        <pre>{JSON.stringify(tokenInfo, null, 2)}</pre>
+                        {error && (
+                            <div className="alert alert-danger mt-3">
+                                {error}
+                            </div>
+                        )}
+                        {userData && (
+                            <div className="mt-3">
+                                <h2>User Data</h2>
+                                <pre>{JSON.stringify(userData, null, 2)}</pre>
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <p>Loading token info...</p>
+                )}
+            </div>
         </div>
     );
 };
