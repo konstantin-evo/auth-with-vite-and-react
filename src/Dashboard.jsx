@@ -5,6 +5,7 @@ import axios from 'axios';
 const Dashboard = () => {
     const [tokenInfo, setTokenInfo] = useState(null);
     const [userData, setUserData] = useState(null);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -46,15 +47,16 @@ const Dashboard = () => {
 
     const fetchUserData = async () => {
         try {
-            const response = await axios.get('https://example.com/userinfo', {
+            const response = await axios.get(import.meta.env.VITE_USERINFO_URL, {
                 headers: {
                     Authorization: `Bearer ${tokenInfo.access_token}`,
                 },
             });
             setUserData(response.data);
+            setError(null);
         } catch (error) {
             console.error('Error fetching user data:', error);
-            navigate(`/?error=user_data_fetch_failed&error_description=Failed to fetch user data`);
+            setError('Failed to fetch user data');
         }
     };
 
@@ -68,6 +70,11 @@ const Dashboard = () => {
                     <button className="btn btn-primary mt-3" onClick={fetchUserData}>
                         Fetch User Data
                     </button>
+                    {error && (
+                        <div className="alert alert-danger mt-3">
+                            {error}
+                        </div>
+                    )}
                     {userData && (
                         <div className="mt-3">
                             <h2>User Data</h2>
