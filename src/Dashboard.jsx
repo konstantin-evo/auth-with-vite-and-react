@@ -98,20 +98,33 @@ const Dashboard = () => {
                 </div>
             </nav>
             <div className="container mt-5">
-                <h1>Dashboard</h1>
                 {tokenInfo ? (
-                    <div>
-                        <h2>Token Info</h2>
-                        <pre>{JSON.stringify(tokenInfo, null, 2)}</pre>
-                        {error && (
-                            <div className="alert alert-danger mt-3">
-                                {error}
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="card mb-3">
+                                <div className="card-header">
+                                    <h2>Token Info</h2>
+                                </div>
+                                <div className="card-body">
+                                    <pre>{JSON.stringify(tokenInfo, null, 2)}</pre>
+                                    {error && (
+                                        <div className="alert alert-danger mt-3">
+                                            {error}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        )}
+                        </div>
                         {userData && (
-                            <div className="mt-3">
-                                <h2>User Data</h2>
-                                <pre>{JSON.stringify(userData, null, 2)}</pre>
+                            <div className="col-12">
+                                <div className="card mt-3">
+                                    <div className="card-header">
+                                        <h2>User Data</h2>
+                                    </div>
+                                    <div className="card-body">
+                                        <pre>{JSON.stringify(userData, null, 2)}</pre>
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </div>
