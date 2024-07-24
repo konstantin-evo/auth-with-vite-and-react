@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
 const Dashboard = () => {
@@ -20,12 +20,16 @@ const Dashboard = () => {
 
         const fetchToken = async () => {
             try {
-                const response = await axios.post('https://example.com/oauth/token', {
-                    grant_type: 'authorization_code',
-                    code: authorizationCode,
-                    redirect_uri: 'http://localhost:3000/dashboard',
-                    client_id: 'your-client-id',
-                    client_secret: 'your-client-secret',
+                const params = new URLSearchParams();
+                params.append('grant_type', 'authorization_code');
+                params.append('code', authorizationCode);
+                params.append('redirect_uri', import.meta.env.VITE_REDIRECT_URI);
+                params.append('client_id', import.meta.env.VITE_CLIENT_ID);
+
+                const response = await axios.post(import.meta.env.VITE_TOKEN_URL, params, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
                 });
 
                 setTokenInfo(response.data);

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { generateRandomState } from './utils/authUtils';
 
 const App = () => {
     const [openidConfig, setOpenidConfig] = useState(null);
@@ -23,9 +24,10 @@ const App = () => {
         const authorizationEndpoint = import.meta.env.VITE_AUTH_URL;
         const scope = import.meta.env.VITE_CLIENT_SCOPE;
         const responseType = 'code';
+        const state = generateRandomState();
 
         if (authorizationEndpoint) {
-            window.location.href = `${authorizationEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
+            window.location.href = `${authorizationEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}&state=${state}`;
         }
     };
 
