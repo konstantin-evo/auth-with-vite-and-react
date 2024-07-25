@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
@@ -7,6 +7,7 @@ const Dashboard = () => {
     const [userData, setUserData] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const tokenFetchInitiated = useRef(false);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -40,7 +41,8 @@ const Dashboard = () => {
             }
         };
 
-        if (authorizationCode) {
+        if (authorizationCode && !tokenFetchInitiated.current) {
+            tokenFetchInitiated.current = true;
             fetchToken();
         }
     }, [navigate]);
@@ -60,7 +62,6 @@ const Dashboard = () => {
         }
     };
 
-    // TODO: Implement logout with Ory Hydra - Ory Kratos Solution
     const handleLogout = () => {
         try {
             document.cookie.split(";").forEach(cookie => {
