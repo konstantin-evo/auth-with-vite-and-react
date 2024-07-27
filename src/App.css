@@ -1,0 +1,44 @@
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+.config-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #fff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 30%;
+    height: 100%;
+    overflow-y: auto;
+    animation: slideIn 0.5s ease-out;
+    text-align: left;
+}
+
+.config-container.hide {
+    animation: slideOut 0.5s ease-out;
+}
+
+.jumbotron {
+    position: relative;
+    overflow: hidden;
+}
